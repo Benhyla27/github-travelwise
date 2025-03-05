@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="username" th:content="${username}">
+  <title>Manage Expenses</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="/js/jspdf.umd.js"></script>
+  <script src="/js/jspdf.plugin.autotable.js"></script>
+  <link rel="stylesheet" href="/css/Expense.css">
+
+</head>
+<body>
+
+<!-- Navbar -->
+<!-- https://getbootstrap.com/docs/4.0/components/navbar/ -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">
+    <img src="/images/TWlogo.png" width="90" height="90" alt="">
+    TravelWise
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Wallet">Wallet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/records">Records</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About Us</a>
+      </li>
+    </ul>
+    <a href="/login" class="btn btn-outline-primary logout-button ml-auto">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Manage Your Expenses</h2>
+
+  <form action="/expenses/add" method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-light">
+    <div class="mb-3">
+      <label for="expenseName" class="form-label">Expense Name</label>
+      <input type="text" id="expenseName" name="expenseName" class="form-control" required>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input type="number" step="0.01" id="amount" name="amount" class="form-control" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="vat" class="form-label">VAT</label>
+        <input type="number" step="0.01" id="vat" name="vat" class="form-control">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="currency" class="form-label">Currency</label>
+      <input type="text" id="currency" name="currency" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="paymentMethod" class="form-label">Payment Method</label>
+      <select id="paymentMethod" name="paymentMethod" class="form-select">
+        <option value="Cash">Cash</option>
+        <option value="Card">Card</option>
+        <option value="Voucher">Online</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="notes" class="form-label">Notes</label>
+      <textarea id="notes" name="notes" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="expenseDate" class="form-label">Date</label>
+      <input type="date" id="expenseDate" name="expenseDate" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Add Expense</button>
+  </form>
+
+  <!-- Expenses Table -->
+  <div class="mt-5">
+    <h3>Your Expenses</h3>
+    <table class="table table-bordered shadow">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>VAT</th>
+        <th>Date</th>
+        <th>Notes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Display user expenses dynamically -->
+      <!-- ChatGPT -->
+      <tr th:each="expense : ${expenses}">
+        <td th:text="${expense.expenseId}">1</td>
+        <td th:text="${expense.expenseName}">Example Expense</td>
+        <td th:text="${expense.amount}">100.00</td>
+        <td th:text="${expense.vat}">20.00</td>
+        <td th:text="${expense.expenseDate}">2023-10-01</td>
+        <td th:text="${expense.notes}">Test notes</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Button to Download Report -->
+    <!-- ChatGPT -->
+    <div class="mt-3 mb-5">
+      <button onclick="downloadReport()" class="btn btn-success">Download Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- Script to Generate and Download Styled PDF Invoice -->
+<!-- https://www.youtube.com/watch?v=rbS49dF9weI -->
+<!-- ChatGPT -->
+<script>
+  function downloadReport() {
+    const { jsPDF } = window.jspdf;
+
+    // Create document with better default settings
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4"
+    });
+
+    // Load User Info
+    const username = document.querySelector("meta[name='username']").content;
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Define colors for consistent branding
+    const primaryColor = [41, 128, 185]; // Professional blue
+    const secondaryColor = [52, 73, 94]; // Dark slate
+    const accentColor = [22, 160, 133]; // Emerald green
+
+    // Add company logo (placeholder - would need to be replaced with actual logo)
+    // If you have a logo URL, you could use: doc.addImage(logoUrl, 'PNG', 15, 10, 30, 15);
+
+    // Add stylish header with company name instead of logo
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 25, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.setFont("helvetica", "bold");
+    doc.text("TravelWise", 15, 15);
+
+    // Add subtitle
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text("EXPENSE REPORT", 15, 22);
+
+    // Add report reference number
+    const reportRef = `REF-${Date.now().toString().slice(-6)}`;
+    doc.setFont("helvetica", "bold");
+    doc.text(reportRef, 170, 15, { align: "right" });
+
+    // Add User and Date Information in an info box
+    doc.setDrawColor(...secondaryColor);
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(15, 35, 180, 30, 3, 3, 'FD');
+
+    doc.setTextColor(...secondaryColor);
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text("REPORT DETAILS", 20, 45);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+
+    // Left column of details
+    doc.text("Employee:", 20, 52);
+    doc.text("Date Generated:", 20, 58);
+
+    // Right column of details
+    doc.setFont("helvetica", "bold");
+    doc.text(username, 60, 52);
+    doc.text(currentDate, 60, 58);
+
+    // Add document title before table
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(...primaryColor);
+    doc.text("Expense Items", 15, 75);
+
+    // Prepare Table Data
+    const headers = [
+      { header: '#', dataKey: 'id' },
+      { header: 'Description', dataKey: 'name' },
+      { header: 'Amount', dataKey: 'amount' },
+      { header: 'VAT', dataKey: 'vat' },
+      { header: 'Date', dataKey: 'date' },
+      { header: 'Notes', dataKey: 'notes' }
+    ];
+
+    const rows = Array.from(document.querySelectorAll("table tbody tr")).map((row, index) => {
+      const cells = row.querySelectorAll("td");
+      return {
+        id: (index + 1).toString(),
+        name: cells[1].innerText,
+        amount: parseFloat(cells[2].innerText).toFixed(2),
+        vat: parseFloat(cells[3].innerText || 0).toFixed(2),
+        date: cells[4].innerText,
+        notes: cells[5].innerText
+      };
+    });
+
+    // Calculate Totals
+    const totalAmount = rows.reduce((sum, row) => sum + parseFloat(row.amount), 0).toFixed(2);
+    const totalVAT = rows.reduce((sum, row) => sum + parseFloat(row.vat), 0).toFixed(2);
+    const totalCost = (parseFloat(totalAmount) + parseFloat(totalVAT)).toFixed(2);
+
+    // Format currency for display
+    const formatCurrency = (value) => {
+      return `€${parseFloat(value).toFixed(2)}`;
+    };
+
+    // Add Table to the PDF with improved styling
+    doc.autoTable({
+      columns: headers,
+      body: rows,
+      startY: 80,
+      theme: 'grid',
+      headStyles: {
+        fillColor: primaryColor,
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+        halign: 'center',
+        valign: 'middle',
+        fontSize: 10,
+        cellPadding: 3,
+      },
+      bodyStyles: {
+        fontSize: 9,
+        cellPadding: 3,
+      },
+      columnStyles: {
+        id: { halign: 'center', cellWidth: 10 },
+        amount: { halign: 'right', cellWidth: 25 },
+        vat: { halign: 'right', cellWidth: 25 },
+        date: { halign: 'center' },
+      },
+      alternateRowStyles: {
+        fillColor: [245, 246, 250]
+      },
+      margin: { left: 15, right: 15 },
+      didParseCell: function(data) {
+        // Format currency cells
+        if (data.column.dataKey === 'amount' || data.column.dataKey === 'vat') {
+          if (data.section === 'body') {
+            data.cell.text = [formatCurrency(data.cell.text[0])];
+          }
+        }
+      }
+    });
+
+    // Add Totals Section with improved styling
+    const finalY = doc.autoTable.previous.finalY + 5;
+
+    // First, add a subtle separator line
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(0.5);
+    doc.line(15, finalY, 195, finalY);
+
+    // Add totals with right alignment
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(...secondaryColor);
+
+    const totalsY = finalY + 10;
+    const totalsLabelX = 130;
+    const totalsValueX = 180;
+
+    doc.text("Subtotal:", totalsLabelX, totalsY);
+    doc.text(formatCurrency(totalAmount), totalsValueX, totalsY, { align: "right" });
+
+    doc.text("VAT Total:", totalsLabelX, totalsY + 7);
+    doc.text(formatCurrency(totalVAT), totalsValueX, totalsY + 7, { align: "right" });
+
+    // Add a separator line before the final total
+    doc.setDrawColor(...secondaryColor);
+    doc.setLineWidth(0.3);
+    doc.line(totalsLabelX, totalsY + 10, totalsValueX, totalsY + 10);
+
+    // Add grand total with bolder styling
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(...accentColor);
+    doc.text("TOTAL:", totalsLabelX, totalsY + 17);
+    doc.text(formatCurrency(totalCost), totalsValueX, totalsY + 17, { align: "right" });
+
+    // Add a payment terms section
+    const termsY = totalsY + 30;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(...secondaryColor);
+    doc.text("Payment Terms & Notes", 15, termsY);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+
+    // Add a stylish footer
+    const addFooter = function() {
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+
+        // Add footer background
+        doc.setFillColor(...secondaryColor);
+        doc.rect(0, doc.internal.pageSize.height - 18, 210, 18, 'F');
+
+        // Add page numbers
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(255, 255, 255);
+        doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 10, { align: 'right' });
+
+        // Add company contact and website
+        doc.text("TravelWise Inc. • www.travelwise.com • 121364791@umail.ucc.ie", 15, doc.internal.pageSize.height - 10);
+      }
+    };
+
+    // Call the footer function
+    addFooter();
+
+    // Add a PDF metadata
+    doc.setProperties({
+      title: `Expense Report - ${username}`,
+      subject: 'Travel Expenses',
+      author: 'TravelWise',
+      keywords: 'expenses, travel, finance',
+      creator: 'TravelWise Expense System'
+    });
+
+    // Save as PDF File with improved filename
+    const filename = `TravelWise_Expenses_${username.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`;
+    doc.save(filename);
+  }
+</script>
+
+
+<script>
+  function downloadInvoice() {
+    window.location.href = "/expenses/generateInvoice";
+  }
+</script>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <!-- Company Info -->
+    <div class="footer-section">
+      <h5>TravelWise</h5>
+      <p>Your trusted partner for every journey, managing your travels with ease and efficiency.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Home</a></li>
+        <li><a href="/expenses"><i class="fas fa-chevron-right"></i> Expenses</a></li>
+        <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+        <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="footer-section">
+      <h5>Follow Us</h5>
+      <ul class="social-links">
+        <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+        <li><a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+        <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="https://ie.linkedin.com/in/ben-hyland-8a4672291" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <p>&copy; 2024 TravelWise. All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

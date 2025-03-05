@@ -1,0 +1,111 @@
+<!-- Mapbox Documentation -->
+<!-- Mapbox GL JS Guides: https://docs.mapbox.com/mapbox-gl-js/guides/ -->
+<!-- Mapbox GL JS Example - Filter Markers: https://docs.mapbox.com/mapbox-gl-js/example/filter-markers/ -->
+<!-- Mapbox GL JS Example - Locate User: https://docs.mapbox.com/mapbox-gl-js/example/locate-user/ -->
+<!-- Mapbox Navigation API - Directions: https://docs.mapbox.com/api/navigation/directions/ -->
+<!-- Mapbox Streets v8 Tileset Reference - POI Label: https://docs.mapbox.com/data/tilesets/reference/mapbox-streets-v8/#poi_label -->
+<!-- Mapbox Studio Manual - Styles: https://docs.mapbox.com/studio-manual/reference/styles/#select-data -->
+<!-- Mapbox Console: https://console.mapbox.com/ -->
+
+<!-- YouTube Tutorials -->
+<!-- Mapbox Tutorial for Beginners: https://www.youtube.com/watch?v=Ldw3mFGyjDE&list=PL86WBCjNmqh5HQInLsyYW7g76_6eKcQLf -->
+<!-- User Location & Tracking with Mapbox: https://www.youtube.com/watch?v=L-t5_JkaOx4&list=PL86WBCjNmqh7K_d6JxYoQfHwNvmnpWC2X&index=12 -->
+<!-- Geocoding and Reverse Geocoding with Mapbox: https://www.youtube.com/watch?v=Z28wa68n7Eg -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <!-- Mapbox Styles: Required CSS for Mapbox map and plugins -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.3/mapbox-gl-geocoder.css" type="text/css">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+
+    <!-- Mapbox Scripts: Required JavaScript for Mapbox map and plugins given to me from documentation-->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.3/mapbox-gl-geocoder.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; } /* Map container styles to fill the screen */
+    </style>
+</head>
+<body>
+<nav id="menu"></nav>
+<div id="map"></div>
+
+<script> // the mapbox token given to me to enable me to use the API
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuaHlsYW5kMSIsImEiOiJjbTcyMDZ6MXowNHU0MmlzaW85Z2ZlaTJhIn0.OtsPnpAhW1401F0BD-n36g';
+
+    // Initialize Mapbox map
+    const map = new mapboxgl.Map({
+        container: 'map', // Container ID
+        style: 'mapbox://styles/benhyland1/cm7az56jf004n01s8fjau20rt', // Custom created styling
+        projection: 'globe', // Globe projection
+        zoom: 2, //zoom distance
+        center: [30, 15] // Starting center point [longitude, latitude]
+    });
+
+    // Add navigation controls (zoom, rotate)
+    map.addControl(new mapboxgl.NavigationControl());
+    map.scrollZoom.enable();
+
+    // Apply atmospheric fog to the globe projection
+    map.on('style.load', () => {
+        map.setFog({});
+    });
+
+// Add Geocoder (Search Bar) to find locations on the map by name/address
+const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken, //reuse access token
+        mapboxgl: mapboxgl,
+        marker: true //Adds a marker to the location that was searched
+    });
+    map.addControl(geocoder);
+
+// Add Geolocate control to track and display the user's real-time location
+const geolocate = new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true, // Continuously track user's location as they move
+    showUserHeading: true // Display a heading arrow in the user's location marker
+});
+    map.addControl(geolocate);
+
+// Event listener to center the map on the user's location when geolocation is triggered
+geolocate.on('geolocate', (e) => {
+        const { latitude, longitude } = e.coords;
+        console.log('User location:', { latitude, longitude });
+        map.flyTo({
+            center: [longitude, latitude],
+            zoom: 12 // once logged it flies to the users location and zooms in
+        });
+    });
+
+    // Add Directions Plugin (for GPS-like navigation)
+    const directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: 'metric',                   // Metric units (kilometers)
+        profile: 'mapbox/driving',        // Driving route calculation (alternatives: 'mapbox/walking', 'mapbox/cycling')
+        interactive: true                 // Allow user input to set locations
+    });
+
+    // Add Directions Plugin as a top-left control
+    map.addControl(directions, 'top-left');
+
+    // Log route information when a new route is loaded
+    directions.on('route', (event) => {
+        const route = event.route[0];
+        console.log('Loaded route details:', route);
+        console.log(`Distance: ${route.distance / 1000} km`); // Log route distance in kilometers
+        console.log(`Duration: ${route.duration / 60} minutes`); // Log estimated travel time in minutes
+
+    });
+</script>
+</body>
+</html>

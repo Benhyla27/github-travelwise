@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - TravelWise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: linear-gradient(120deg, #f8f9fa, #e9ecef);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            font-weight: 300;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(to right, #003d99, #007bff);
+            color: #fff;
+            padding: 1.5em 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5em;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* About Us Section */
+        .about-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 4em 2em;
+        }
+
+        .about-image {
+            flex: 1 1 400px;
+            margin: 20px;
+            max-width: 450px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-text {
+            flex: 1 1 600px;
+            margin: 20px;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1em;
+            color: #003d99;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5em;
+        }
+
+        .about-text .highlight {
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        /* Team Section */
+        .team-section {
+            background: #f8f9fa;
+            padding: 4em 2em;
+            text-align: center;
+        }
+
+        .team-section h2 {
+            margin-bottom: 1.5em;
+            color: #003d99;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .team-member {
+            text-align: center;
+            flex: 1 1 200px;
+            max-width: 250px;
+        }
+
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .team-member h4 {
+            font-size: 1.2rem;
+            margin: 0.5em 0 0.3em;
+        }
+
+        .team-member p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Footer Styling */
+        .footer {
+            background: #003d99; /* Vibrant blue for a professional look */
+            color: #fff; /* White text for contrast */
+            padding: 20px 0;
+        }
+
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .footer-section {
+            flex: 1 1 300px; /* Responsive width */
+            margin: 15px;
+        }
+
+        .footer-section h5 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #79c2ff; /* Light blue links */
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff; /* Link hover color for interaction */
+        }
+
+        .footer-section .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-section .social-links li a {
+            font-size: 20px;
+            color: #79c2ff;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer-section .social-links li a:hover {
+            color: #fff; /* Hover effect on social media icons */
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 10px;
+            background: #002966; /* Darker shade for separation */
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .social-links {
+            margin: 1em 0;
+        }
+
+        .social-links a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #79c2ff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .about-container {
+                flex-direction: column;
+            }
+
+            .about-text h2 {
+                font-size: 1.8rem;
+            }
+
+            .team-member {
+                flex: 1 1 100%;
+            }
+
+            header .home-button {
+                background-color: #FFFFFF;
+
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <h1>About TravelWise</h1>
+    <p>Your Trusted Partner for Seamless Travel Experiences</p>
+    <div>
+        <a href="/dashboard" class="home-button">Home</a>
+    </div>
+
+</header>
+
+<!-- About Us Section -->
+<section class="about-container">
+    <div class="about-image">
+        <img src="/images/TWlogo2.png" alt="About Us Image">
+    </div>
+    <div class="about-text">
+        <h2>Who We Are</h2>
+        <p>At <span class="highlight">TravelWise</span>, we strive to provide seamless travel solutions for passionate explorers, business travelers, and everyone in between. Our mission is to simplify your travel needs, so you can focus on what matters most to you.</p>
+        <p>Whether you're planning your dream vacation, managing work travel, or organizing your family trip, <span class="highlight">TravelWise</span> is committed to making your journeys smooth, efficient, and memorable.</p>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <h2>Meet Our Team</h2>
+    <div class="team-members">
+        <!-- Team Member 1 -->
+        <div class="team-member">
+            <img src="/images/me.png" alt="Team Member 1">
+            <h4>Ben Hyland</h4>
+            <p>Founder & CEO</p>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="team-member">
+            <img src="/images/me.png" alt="Team member 2">
+            <h4>Ben Hyland</h4>
+            <p>COO</p>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="team-member">
+            <img src="/images/me.png" alt="Team Member 3">
+            <h4>Ben Hyland</h4>
+            <p>CTO</p>
+        </div>
+
+        <!-- Team Member 4 -->
+        <div class="team-member">
+            <img src="/images/me.png" alt="Team Member 4">
+            <h4>Ben Hyland</h4>
+            <p>Marketing Director</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <!-- Company Info -->
+        <div class="footer-section">
+            <h5>TravelWise</h5>
+            <p>Your trusted partner for every journey, managing your travels with ease and efficiency.</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+            <h5>Quick Links</h5>
+            <ul>
+                <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Home</a></li>
+                <li><a href="/expenses"><i class="fas fa-chevron-right"></i> Expenses</a></li>
+                <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+            </ul>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="footer-section">
+            <h5>Follow Us</h5>
+            <ul class="social-links">
+                <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="https://ie.linkedin.com/in/ben-hyland-8a4672291" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+        <p>&copy; 2024 TravelWise. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

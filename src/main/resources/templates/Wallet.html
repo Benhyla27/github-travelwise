@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelWise Wallet</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/wallet.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="/images/TWlogo.png" width="90" height="90" alt="TravelWise">
+        TravelWise
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fas"></i>Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/expenses"><i class="fas"></i>Expenses</a></li>
+            <li class="nav-item"><a class="nav-link" href="/records"><i class="fas"></i>Records</a></li>
+            <li class="nav-item"><a class="nav-link" href="/about"><i class="fas"></i>About Us</a></li>
+        </ul>
+        <a href="/login" class="btn btn-outline-primary logout-button ml-auto">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="wallet-header">
+        <h1><i class="fas fa-wallet"></i>Your Wallet</h1>
+        <p>Manage all your travel documents in one secure place</p>
+    </div>
+
+    <div class="section text-center">
+        <h2 class="section-header"><i class="fas fa-cloud-upload-alt"></i>Upload Documents</h2>
+        <p>Securely store and manage all your travel documents</p>
+        <a href="/upload" class="big-upload-button">
+            <i class="fas fa-file-upload"></i> Upload Your Documentation
+        </a>
+    </div>
+
+    <!-- Uploaded Image Section -->
+    <div class="section">
+        <h2 class="section-header"><i class="fas fa-images"></i>Your Documents</h2>
+        <div class="image-container" th:if="${imageId != null}">
+            <img th:src="@{/image/{id}(id=${imageId})}" alt="Boarding Pass Image" class="img-fluid">
+        </div>
+        <div class="empty-state" th:if="${imageId == null}">
+            <i class="far fa-file-image"></i>
+            <h4>No documents uploaded yet</h4>
+            <p>Upload your boarding passes, tickets and receipts to keep them organized</p>
+        </div>
+    </div>
+
+    <!-- Hotel Bookings Section -->
+    <div class="section">
+        <h2 class="section-header"><i class="fas fa-hotel"></i>Your Hotel Bookings</h2>
+        <div class="d-flex flex-wrap justify-content-start">
+            <div th:each="booking : ${bookings}" class="booking-card">
+                <span class="badge">Hotel</span>
+                <h3 th:text="${booking.hotelName}">Hotel Name</h3>
+                <p><i class="fas fa-bookmark"></i> <span th:text="'Booking Number: ' + ${booking.bookingNumber}">Booking Number</span></p>
+                <p><i class="fas fa-map-marker-alt"></i> <span th:text="'Address: ' + ${booking.address}">Address</span></p>
+                <p><i class="fas fa-envelope"></i> <span th:text="'Eircode: ' + ${booking.eircode}">Eircode</span></p>
+                <p><i class="fas fa-user"></i> <span th:text="'Booking Name: ' + ${booking.bookingName}">Booking Name</span></p>
+                <p><i class="fas fa-calendar-check"></i> <span th:text="'Check-in Date: ' + ${booking.checkInDate}">Check-in Date</span></p>
+                <p><i class="fas fa-clock"></i> <span th:text="'Check-in Time: ' + ${booking.checkInTime}">Check-in Time</span></p>
+                <p><i class="fas fa-calendar-times"></i> <span th:text="'Check-out Date: ' + ${booking.checkOutDate}">Check-out Date</span></p>
+                <p><i class="fas fa-clock"></i> <span th:text="'Check-out Time: ' + ${booking.checkOutTime}">Check-out Time</span></p>
+                <p><i class="fas fa-euro-sign"></i> <span th:text="'Price Paid: €' + ${booking.pricePaid}">Price Paid</span></p>
+            </div>
+
+            <!-- Empty state if no bookings -->
+            <div class="empty-state" th:if="${bookings == null || bookings.isEmpty()}">
+                <i class="fas fa-hotel"></i>
+                <h4>No hotel bookings found</h4>
+                <p>Your hotel reservations will appear here once added</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Car Rentals Section -->
+    <div class="section">
+        <h2 class="section-header"><i class="fas fa-car"></i>Your Car Rentals</h2>
+        <div class="d-flex flex-wrap justify-content-start">
+            <div th:each="rental : ${carRentals}" class="booking-card">
+                <span class="badge">Car Rental</span>
+                <h3 th:text="${rental.carName}">Rental Car Name</h3>
+                <p><i class="fas fa-bookmark"></i> <span th:text="'Booking Number: ' + ${rental.bookingNumber}">Booking Number</span></p>
+                <p><i class="fas fa-car-side"></i> <span th:text="'Car Type: ' + ${rental.carType}">Car Type</span></p>
+                <p><i class="fas fa-calendar-plus"></i> <span th:text="'Pick-Up Date: ' + ${rental.pickUpDate}">Pick-Up Date</span></p>
+                <p><i class="fas fa-clock"></i> <span th:text="'Pick-Up Time: ' + ${rental.pickUpTime}">Pick-Up Time</span></p>
+                <p><i class="fas fa-calendar-minus"></i> <span th:text="'Drop-Off Date: ' + ${rental.dropOffDate}">Drop-Off Date</span></p>
+                <p><i class="fas fa-clock"></i> <span th:text="'Drop-Off Time: ' + ${rental.dropOffTime}">Drop-Off Time</span></p>
+                <p><i class="fas fa-shield-alt"></i> <span th:text="'Insurance: ' + (${rental.insuranceCover} ? 'Yes' : 'No')">Insurance Cover</span></p>
+            </div>
+
+            <!-- Empty state if no rentals -->
+            <div class="empty-state" th:if="${carRentals == null || carRentals.isEmpty()}">
+                <i class="fas fa-car-side"></i>
+                <h4>No car rentals found</h4>
+                <p>Your car rental information will appear here once added</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <!-- Company Info -->
+        <div class="footer-section">
+            <h5>TravelWise</h5>
+            <p>Your trusted partner for every journey, managing your travels with ease and efficiency.</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+            <h5>Quick Links</h5>
+            <ul>
+                <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Home</a></li>
+                <li><a href="/expenses"><i class="fas fa-chevron-right"></i> Expenses</a></li>
+                <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+            </ul>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="footer-section">
+            <h5>Follow Us</h5>
+            <ul class="social-links">
+                <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="https://ie.linkedin.com/in/ben-hyland-8a4672291" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+        <p>&copy; 2024 TravelWise. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Function to fetch the wallet data
+    async function fetchWalletData() {
+        try {
+            const response = await fetch('/api/wallet'); // Adjust endpoint as needed
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const walletData = await response.json();
+
+            // Update the Hotel Bookings section
+            const bookingsContainer = document.querySelector('.section:nth-child(3) .d-flex.flex-wrap');
+
+            if (walletData.bookings && walletData.bookings.length > 0) {
+                bookingsContainer.innerHTML = ''; // Clear old bookings
+
+                walletData.bookings.forEach(booking => {
+                    const bookingCard = document.createElement('div');
+                    bookingCard.className = "booking-card";
+                    bookingCard.innerHTML = `
+                        <span class="badge">Hotel</span>
+                        <h3>${booking.hotelName}</h3>
+                        <p><i class="fas fa-bookmark"></i> Booking Number: ${booking.bookingNumber}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Address: ${booking.address}</p>
+                        <p><i class="fas fa-envelope"></i> Eircode: ${booking.eircode}</p>
+                        <p><i class="fas fa-user"></i> Booking Name: ${booking.bookingName}</p>
+                        <p><i class="fas fa-calendar-check"></i> Check-in Date: ${booking.checkInDate}</p>
+                        <p><i class="fas fa-clock"></i> Check-in Time: ${booking.checkInTime}</p>
+                        <p><i class="fas fa-calendar-times"></i> Check-out Date: ${booking.checkOutDate}</p>
+                        <p><i class="fas fa-clock"></i> Check-out Time: ${booking.checkOutTime}</p>
+                        <p><i class="fas fa-euro-sign"></i> Price Paid: €${booking.pricePaid}</p>
+                    `;
+                    bookingsContainer.appendChild(bookingCard);
+                });
+            } else {
+                bookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-hotel"></i>
+                        <h4>No hotel bookings found</h4>
+                        <p>Your hotel reservations will appear here once added</p>
+                    </div>
+                `;
+            }
+
+            // Similarly update Car Rentals section
+            const rentalsContainer = document.querySelector('.section:nth-child(4) .d-flex.flex-wrap');
+
+            if (walletData.carRentals && walletData.carRentals.length > 0) {
+                rentalsContainer.innerHTML = ''; // Clear old rentals
+
+                walletData.carRentals.forEach(rental => {
+                    const rentalCard = document.createElement('div');
+                    rentalCard.className = "booking-card";
+                    rentalCard.innerHTML = `
+                        <span class="badge">Car Rental</span>
+                        <h3>${rental.carName}</h3>
+                        <p><i class="fas fa-bookmark"></i> Booking Number: ${rental.bookingNumber}</p>
+                        <p><i class="fas fa-car-side"></i> Car Type: ${rental.carType}</p>
+                        <p><i class="fas fa-calendar-plus"></i> Pick-Up Date: ${rental.pickUpDate}</p>
+                        <p><i class="fas fa-clock"></i> Pick-Up Time: ${rental.pickUpTime}</p>
+                        <p><i class="fas fa-calendar-minus"></i> Drop-Off Date: ${rental.dropOffDate}</p>
+                        <p><i class="fas fa-clock"></i> Drop-Off Time: ${rental.dropOffTime}</p>
+                        <p><i class="fas fa-shield-alt"></i> Insurance: ${rental.insuranceCover ? 'Yes' : 'No'}</p>
+                    `;
+                    rentalsContainer.appendChild(rentalCard);
+                });
+            } else {
+                rentalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-car-side"></i>
+                        <h4>No car rentals found</h4>
+                        <p>Your car rental information will appear here once added</p>
+                    </div>
+                `;
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Automatically refresh every 30 seconds or a desired interval
+    setInterval(fetchWalletData, 30000); // Time in milliseconds
+
+    // Fetch data when the page loads for the first time
+    document.addEventListener('DOMContentLoaded', fetchWalletData);
+</script>
+</body>
+</html>

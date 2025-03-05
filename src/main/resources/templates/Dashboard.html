@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelWise Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif; /* Set Poppins as the primary font */
+            line-height: 1.6; /* Adjust line height for better readability */
+            color: #333; /* Use a neutral color for text */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Reset box sizing */
+        }
+        .navbar {
+            background: linear-gradient(90deg, #007bff, #0056b3, #003d99) !important;
+            color: #fff;
+
+        }
+        .navbar-brand img {
+            max-height: 70px;
+            margin-right: 25px;
+        }
+        .navbar-nav {
+            margin: auto;
+        }
+        .navbar-nav .nav-item .nav-link {
+            color: #fff;
+            font-weight: 600;
+            padding-right: 20px;
+            transition: color 0.3s, letter-spacing 0.3s;
+
+        }
+        .navbar-nav .nav-item .nav-link:hover {
+            color: #79c2ff;
+            letter-spacing: 0.5px;
+
+        }
+             /* Vibrant Blue Gradient Background */
+         .navbar {
+             background: linear-gradient(90deg, #007bff, #0056b3, #003d99) !important;
+             color: #fff; /* Ensure text is readable against the blue background */
+         }
+
+        /* Navbar Links */
+        .navbar-nav .nav-link {
+            color: #fff; /* White text for better visibility */
+            font-weight: 600; /* Slightly bold for clean appearance */
+            transition: color 0.3s, letter-spacing 0.3s; /* Smooth hover effects */
+        }
+
+        /* Link Hover Effect */
+        .navbar-nav .nav-link:hover {
+            color: #79c2ff; /* A light blue color for hover, matching the gradient tone */
+            letter-spacing: 0.5px; /* Subtle letter-spacing effect for a modern touch */
+        }
+
+        /* Navbar Brand */
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700; /* Bold for prominence */
+            color: #fff;
+        }
+
+        .navbar-brand:hover {
+            color: #79c2ff; /* Same hover effect as links */
+        }
+
+        /* Button Styling */
+        .navbar .btn-outline-primary {
+            color: #79c2ff; /* Matches the hover effect */
+            border-color: #79c2ff;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar .btn-outline-primary:hover {
+            background-color: #79c2ff;
+            color: #003d99; /* Blue text for contrast on the lighter background */
+        }
+
+        /* Optional - Customize Toggler Icon */
+        .navbar-toggler {
+            border-color: #79c2ff;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(121,194,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        /* Container for all dashboard cards */
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center all cards */
+            padding: 30px;
+            gap: 20px; /* Add consistent spacing */
+            background: linear-gradient(135deg, #f5f7fa, #e4e7ec); /* Subtle background gradient */
+        }
+
+        /* Common Card Style */
+        .dashboard-card {
+            flex: 1 1 calc(30% - 40px); /* 3 cards per row, with spacing */
+            max-width: 300px; /* Adds a max width for consistent sizing */
+            margin: 10px;
+            padding: 25px;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            background: #007bff; /* Default fallback for browsers not supporting gradients */
+            background: linear-gradient(135deg, rgba(0,123,255,1) 0%, rgba(0,102,204,1) 100%);
+            box-shadow: none; /* Removed shadow */
+            overflow: hidden; /* Ensure no overflow */
+        }
+
+        /* Hover animations */
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            background: linear-gradient(135deg, rgba(0,102,204,1) 0%, rgba(0,123,255,1) 100%); /* Reverse gradient */
+        }
+
+        /* Remove any hover background or highlight area */
+        .dashboard-card:focus, .dashboard-card:active {
+            outline: none; /* Remove focus outline */
+            box-shadow: none; /* Ensure no shadow appears */
+        }
+
+        /* Card color variations with a new color palette */
+        .wallet {
+            background: linear-gradient(135deg, #4caf50 0%, #087f23 100%); /* Green tones */
+        }
+
+        .taxi {
+            background: linear-gradient(135deg, #ff9800 0%, #e65100 100%); /* Orange tones */
+        }
+
+        .expense {
+            background: linear-gradient(135deg, #03a9f4 0%, #01579b 100%); /* Light to deep blue tones */
+        }
+
+        .community {
+            background: linear-gradient(135deg, #e91e63 0%, #880e4f 100%); /* Pink tones */
+        }
+
+        .transport {
+            background: linear-gradient(135deg, #9c27b0 0%, #4a0072 100%); /* Purple tones */
+        }
+
+        .map {
+            background: linear-gradient(135deg, #ffeb3b 0%, #f57f17 100%); /* Yellow tones */
+        }
+
+        .avoid {
+            background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%); /* Red tones */
+        }
+
+        /* Add subtle hover animation without background box */
+        .dashboard-card::after {
+            content: none; /* Disable glowing effect */
+        }
+
+        /* Footer Styling */
+        .footer {
+            background: #003d99; /* Vibrant blue for a professional look */
+            color: #fff; /* White text for contrast */
+            padding: 20px 0;
+        }
+
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .footer-section {
+            flex: 1 1 300px; /* Responsive width */
+            margin: 15px;
+        }
+
+        .footer-section h5 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #79c2ff; /* Light blue links */
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff; /* Link hover color for interaction */
+        }
+
+        .footer-section .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-section .social-links li a {
+            font-size: 20px;
+            color: #79c2ff;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer-section .social-links li a:hover {
+            color: #fff; /* Hover effect on social media icons */
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 10px;
+            background: #002966; /* Darker shade for separation */
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+
+        </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="/images/TWlogo.png" width="90" height="85" alt="">
+        TravelWise
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Wallet">Wallet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/records">Records</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About Us</a>
+            </li>
+        </ul>
+        <a href="/login" class="btn btn-outline-primary logout-button ml-auto">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</nav>
+
+<!-- Dashboard Content -->
+<div class="dashboard-container">
+    <a href="/Wallet" class="dashboard-card wallet">
+        <i class="fas fa-wallet"></i>
+        <span>Wallet</span>
+    </a>
+    <a href="/taxi" class="dashboard-card taxi">
+        <i class="fas fa-car"></i>
+        <span>Taxi</span>
+    </a>
+    <a href="/expenses" class="dashboard-card expense">
+        <i class="fas fa-coins"></i>
+        <span>Expense</span>
+    </a>
+    <a href="/community" class="dashboard-card community">
+        <i class="fas fa-map-pin"></i>
+        <span>Destinations</span>
+    </a>
+    <a href="/map" class="dashboard-card map">
+        <i class="fas fa-map-marked-alt"></i>
+        <span>Map</span>
+    </a>
+    <a href="/records" class="dashboard-card transport">
+        <i class="fas fa-file-alt"></i>
+        <span>Records</span>
+    </a>
+    <a href="/avoid" class="dashboard-card avoid">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Areas to Avoid</span>
+    </a>
+
+</div>
+
+<div class="container mt-5" style="margin-bottom: 50px;">
+    <div class="row">
+        <!-- Carousel Section -->
+        <div class="col-md-6">
+            <div id="travelCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/images/TravelAd1.jpg" class="d-block w-100" alt="Destination 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/TravelAd2.jpg" class="d-block w-100" alt="Destination 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/TravelAd3.jpg" class="d-block w-100" alt="Destination 3">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/TravelAd4.jpg" class="d-block w-100" alt="Destination 4">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#travelCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#travelCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- TravelWise Description -->
+        <div class="col-md-6">
+            <div class="card p-3" style="background-color: #f8f9fa; border-radius: 10px;">
+                <h3 class="text-center" style="font-family: 'Poppins', sans-serif; font-size: 1.8rem; font-weight: 700; color: #001f3f; line-height: 1.5;">
+                    TravelWise: Your Partner for Every Journey
+                </h3>
+                <div class="mt-3" style="font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 400; line-height: 1.5; padding: 15px; background-color: transparent;">
+
+                    Whether you're chasing your dream destination or traveling for business, TravelWise makes every journey seamless by storing essential documents, and simplifying logistics. From sunsets to boardrooms, TravelWise ensures you focus on the destination, not the details.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <!-- Company Info -->
+        <div class="footer-section">
+            <h5>TravelWise</h5>
+            <p>Your trusted partner for every journey, managing your travels with ease and efficiency.</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+            <h5>Quick Links</h5>
+            <ul>
+                <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Home</a></li>
+                <li><a href="/expenses"><i class="fas fa-chevron-right"></i> Expenses</a></li>
+                <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+            </ul>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="footer-section">
+            <h5>Follow Us</h5>
+            <ul class="social-links">
+                <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="https://ie.linkedin.com/in/ben-hyland-8a4672291" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+        <p>&copy; 2024 TravelWise. All Rights Reserved.</p>
+    </div>
+</footer>
+
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

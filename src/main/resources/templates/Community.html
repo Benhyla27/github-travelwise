@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelWise</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Included custom styles for consistent navbar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            min-height: 100vh; /* Minimum height of 100% of viewport height */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #007bff, #0056b3, #003d99) !important;
+            color: #fff;
+        }
+
+        .navbar-brand img {
+            max-height: 70px;
+            margin-right: 25px;
+        }
+
+        .navbar-nav {
+            margin: auto;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            color: #fff;
+            font-weight: 600;
+            padding-right: 20px;
+            transition: color 0.3s, letter-spacing 0.3s;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            color: #79c2ff;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar .btn-outline-primary {
+            color: #79c2ff;
+            border-color: #79c2ff;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar .btn-outline-primary:hover {
+            background-color: #79c2ff;
+            color: #003d99;
+        }
+
+        .navbar-toggler {
+            border-color: #79c2ff;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(121,194,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        /* Main content should take available space */
+        .container.mt-4 {
+            flex: 1 0 auto; /* Grow to fill available space */
+        }
+        /* Footer styling */
+        .footer {
+            background: #003d99;
+            color: #fff;
+            padding: 20px 0;
+            margin-top: auto; /* Push to bottom when content is short */
+            width: 100%;
+        }
+
+        /* Rest of your existing footer styles remain the same */
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .footer-section {
+            flex: 1 1 300px;
+            margin: 15px;
+        }
+
+        .footer-section h5 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .footer-section p {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #79c2ff;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+
+        .footer-section .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-section .social-links li a {
+            font-size: 20px;
+            color: #79c2ff;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .footer-section .social-links li a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 10px;
+            background: #002966;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="/images/TWlogo.png" width="90" height="90" alt="">
+        TravelWise
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Wallet">Wallet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="records">Records</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About Us</a>
+            </li>
+        </ul>
+        <a href="/login" class="btn btn-outline-primary logout-button ml-auto">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</nav>
+<!-- End Navbar -->
+
+<!-- Main Content -->
+<div class="container mt-4">
+    <h1 class="text-center">TravelWise: Explore Countries and Cities</h1>
+    <hr>
+
+    <!-- Dropdown to Select a Country -->
+    <div class="mb-4">
+        <label for="countrySelect" class="form-label">Select a Country:</label>
+        <select id="countrySelect" class="form-select">
+            <option value="" disabled selected>Choose a country...</option>
+        </select>
+    </div>
+
+    <!-- Dropdown to Select a City -->
+    <div class="mb-4" id="cityDropdownContainer" style="display: none;">
+        <label for="citySelect" class="form-label">Select a City:</label>
+        <select id="citySelect" class="form-select">
+            <option value="" disabled selected>Choose a city...</option>
+        </select>
+    </div>
+
+    <!-- Display Selected City Information -->
+    <div id="cityInfoContainer" class="mt-4">
+        <!-- City information will be rendered here -->
+    </div>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // API endpoints
+    const countryApiUrl = '/community/countries';       // Endpoint to fetch all countries
+    const cityApiUrl = '/community/cities/';            // Endpoint to fetch cities by country ID
+    const cityDetailsApiUrl = '/community/city-details/'; // Endpoint to fetch specific city details
+
+    // DOM Elements
+    const countrySelect = document.getElementById('countrySelect');
+    const citySelect = document.getElementById('citySelect');
+    const cityDropdownContainer = document.getElementById('cityDropdownContainer');
+    const cityInfoContainer = document.getElementById('cityInfoContainer');
+
+    // Fetch and Populate Countries
+    function fetchCountries() {
+        fetch(countryApiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch countries.');
+                }
+                return response.json();
+            })
+            .then(countries => {
+                countries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.countryId;
+                    option.textContent = country.name;
+                    countrySelect.appendChild(option);
+                });
+            })
+            .catch(err => {
+                console.error("Error loading countries:", err);
+                alert('Error: Could not load countries.');
+            });
+    }
+
+    // Fetch and Populate Cities for Selected Country
+    function fetchCities(countryId) {
+        citySelect.innerHTML = '<option value="" disabled selected>Choose a city...</option>';
+        cityDropdownContainer.style.display = 'none';
+        cityInfoContainer.innerHTML = ''; // Clear city info when country changes
+
+        fetch(cityApiUrl + countryId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch cities.');
+                }
+                return response.json();
+            })
+            .then(cities => {
+                if (cities.length === 0) {
+                    alert('No cities available for the selected country.');
+                    return;
+                }
+
+                cityDropdownContainer.style.display = 'block';
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city.cityId;
+                    option.textContent = city.name;
+                    citySelect.appendChild(option);
+                });
+            })
+            .catch(err => {
+                console.error("Error loading cities:", err);
+                alert('Error: Could not load cities.');
+            });
+    }
+
+    // Fetch and Display City Details
+    function fetchCityDetails(cityId) {
+        cityInfoContainer.innerHTML = '<p>Loading city information...</p>';
+
+        fetch(cityDetailsApiUrl + cityId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch city details.");
+                }
+                return response.json();
+            })
+            .then(city => {
+                cityInfoContainer.innerHTML = generateCityDetailsHTML(city);
+            })
+            .catch(err => {
+                console.error("Error fetching city details:", err);
+                cityInfoContainer.innerHTML = '<p>Failed to load city details. Please try again later.</p>';
+            });
+    }
+
+    // Generate City Details HTML
+    //ChatGPT
+    function generateCityDetailsHTML(city) {
+        const restaurantsList = city.restaurants
+            ? city.restaurants.split(',').map((restaurant) => `<li>${restaurant.trim()}</li>`).join('')
+            : '<li>No restaurants available.</li>';
+
+        const activitiesList = city.activities
+            ? city.activities.split(',').map((activity) => `<li>${activity.trim()}</li>`).join('')
+            : '<li>No activities available.</li>';
+
+        const publicTransportInfo = city.public_transport_info
+            ? `<li><a href="${city.public_transport_info.trim()}" target="_blank" rel="noopener noreferrer">${city.public_transport_info.trim()}</a></li>`
+            : '<li>No public transport info available.</li>';
+
+        return `
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>${city.name}</h2>
+                </div>
+                <div class="card-body">
+                    <h4>City ID:</h4>
+                    <p>${city.cityId}</p>
+                    <h4>Description:</h4>
+                    <p>${city.description || 'No description available.'}</p>
+                    <h4>Image:</h4>
+                    ${city.image_url ? `<img src="${city.image_url}" alt="City Image" class="img-fluid mb-3" />` : '<p>No image available.</p>'}
+                    <h4>Restaurants:</h4>
+                    <ul>
+                        ${restaurantsList}
+                    </ul>
+                    <h4>Activities:</h4>
+                    <ul>
+                        ${activitiesList}
+                    </ul>
+                    <h4>Public Transport Information:</h4>
+                    <p>
+                        ${publicTransportInfo}
+                    </p>
+                </div>
+            </div>
+            `;
+    }
+
+    // Add Event Listeners for Dropdowns
+    countrySelect.addEventListener('change', () => {
+        const countryId = countrySelect.value;
+        if (countryId) {
+            fetchCities(countryId);
+        }
+    });
+
+    citySelect.addEventListener('change', () => {
+        const cityId = citySelect.value;
+        if (cityId) {
+            fetchCityDetails(cityId);
+        }
+    });
+
+    // Initialize Page
+    fetchCountries();
+</script>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <!-- Company Info -->
+        <div class="footer-section">
+            <h5>TravelWise</h5>
+            <p>Your trusted partner for every journey, managing your travels with ease and efficiency.</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+            <h5>Quick Links</h5>
+            <ul>
+                <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Home</a></li>
+                <li><a href="/expenses"><i class="fas fa-chevron-right"></i> Expenses</a></li>
+                <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+            </ul>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="footer-section">
+            <h5>Follow Us</h5>
+            <ul class="social-links">
+                <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="https://ie.linkedin.com/in/ben-hyland-8a4672291" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+        <p>&copy; 2024 TravelWise. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

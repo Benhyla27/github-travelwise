@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>TravelWise Wallet</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif; /* Set Poppins as the primary font */
+      line-height: 1.6; /* Adjust line height for better readability */
+      color: #333; /* Use a neutral color for text */
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box; /* Reset box sizing */
+    }
+    .navbar {
+      background: linear-gradient(90deg, #007bff, #0056b3, #003d99) !important;
+      color: #fff;
+
+    }
+    .navbar-brand img {
+      max-height: 70px;
+      margin-right: 25px;
+    }
+    .navbar-nav {
+      margin: auto;
+    }
+    .navbar-nav .nav-item .nav-link {
+      color: #fff;
+      font-weight: 600;
+      padding-right: 20px;
+      transition: color 0.3s, letter-spacing 0.3s;
+
+    }
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #79c2ff;
+      letter-spacing: 0.5px;
+
+    }
+    /* Vibrant Blue Gradient Background */
+    .navbar {
+      background: linear-gradient(90deg, #007bff, #0056b3, #003d99) !important;
+      color: #fff; /* Ensure text is readable against the blue background */
+    }
+
+    /* Navbar Links */
+    .navbar-nav .nav-link {
+      color: #fff; /* White text for better visibility */
+      font-weight: 600; /* Slightly bold for clean appearance */
+      transition: color 0.3s, letter-spacing 0.3s; /* Smooth hover effects */
+    }
+
+    /* Link Hover Effect */
+    .navbar-nav .nav-link:hover {
+      color: #79c2ff; /* A light blue color for hover, matching the gradient tone */
+      letter-spacing: 0.5px; /* Subtle letter-spacing effect for a modern touch */
+    }
+
+    /* Navbar Brand */
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: 700; /* Bold for prominence */
+      color: #fff;
+    }
+
+    .navbar-brand:hover {
+      color: #79c2ff; /* Same hover effect as links */
+    }
+
+    /* Button Styling */
+    .navbar .btn-outline-primary {
+      color: #79c2ff; /* Matches the hover effect */
+      border-color: #79c2ff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .navbar .btn-outline-primary:hover {
+      background-color: #79c2ff;
+      color: #003d99; /* Blue text for contrast on the lighter background */
+    }
+
+    /* Optional - Customize Toggler Icon */
+    .navbar-toggler {
+      border-color: #79c2ff;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(121,194,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .section {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .form-control {
+      margin-bottom: 15px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Responsive Spacing */
+    @media (min-width: 768px) {
+      .dashboard-layout {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .dashboard-layout .section {
+        flex: 1;
+      }
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">
+    <img src="/images/TWlogo.png" width="90" height="90" alt="TravelWise">
+    TravelWise
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/records">Records</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About Us</a>
+      </li>
+    </ul>
+    <a href="/login" class="btn btn-outline-primary logout-button ml-auto">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+  <!-- Use a dashboard layout for equal columns -->
+  <div class="dashboard-layout">
+
+    <!-- Boarding Pass Upload Section -->
+    <div class="section">
+      <h2>Upload Boarding Pass</h2>
+      <form action="/boardingPass/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control" required>
+        <button type="submit">Upload</button>
+      </form>
+      <ul class="mt-3">
+        <th:block th:each="boardingPass : ${boardingPasses}">
+          <li th:text="${boardingPass.filename}"></li>
+        </th:block>
+      </ul>
+    </div>
+
+    <!-- Hotel Booking Information Section -->
+    <div class="section">
+      <h2>Hotel Booking Information</h2>
+      <form action="/hotelBookings" method="POST">
+        <input type="text" id="booking_number" name="bookingNumber" class="form-control" placeholder="Booking Number" required>
+        <input type="text" id="hotel_name" name="hotelName" class="form-control" placeholder="Hotel Name" required>
+        <input type="text" id="address" name="address" class="form-control" placeholder="Address" required>
+        <input type="text" id="eircode" name="eircode" class="form-control" placeholder="Eircode">
+        <label for="check_in_date">Check-In Date</label>
+        <input type="date" id="check_in_date" name="checkInDate" class="form-control" required>
+        <label for="check_in_time">Check-In Time</label>
+        <input type="time" id="check_in_time" name="checkInTime" class="form-control" required>
+        <label for="check_out_date">Check-Out Date</label>
+        <input type="date" id="check_out_date" name="checkOutDate" class="form-control" required>
+        <label for="check_out_time">Check-Out Time</label>
+        <input type="time" id="check_out_time" name="checkOutTime" class="form-control" required>
+        <input type="text" id="booking_name" name="bookingName" class="form-control" placeholder="Booking Name" required>
+        <input type="number" id="price_paid" name="pricePaid" class="form-control" placeholder="Price Paid">
+        <button type="submit">Submit Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Separate section for Car Rental -->
+  <div class="section">
+    <h2>Rental Car Information</h2>
+    <form action="/carRentals" method="POST">
+      <input type="text" id="car_booking_number" name="bookingNumber" class="form-control" placeholder="Booking Number" required>
+      <select id="car_type" name="carType" class="form-control" required>
+        <option value="" disabled selected>Vehicle Type</option>
+        <option value="Car">Car</option>
+        <option value="Van">Van</option>
+        <option value="Motorcycle">Motorcycle</option>
+      </select>
+      <input type="text" id="car_name" name="carName" class="form-control" placeholder="Car Name" required>
+      <label for="pick_up_date">Pick-Up Date</label>
+      <input type="date" id="pick_up_date" name="pickUpDate" class="form-control" required>
+      <label for="pick_up_time">Pick-Up Time</label>
+      <input type="time" id="pick_up_time" name="pickUpTime" class="form-control" required>
+      <label for="drop_off_date">Drop-Off Date</label>
+      <input type="date" id="drop_off_date" name="dropOffDate" class="form-control" required>
+      <label for="drop_off_time">Drop-Off Time</label>
+      <input type="time" id="drop_off_time" name="dropOffTime" class="form-control" required>
+      <label for="insurance_cover">Insurance Cover</label>
+      <select id="insurance_cover" name="insuranceCover" class="form-control" required>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <button type="submit">Submit Booking</button>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <!-- Company Info -->
+    <div class="footer-section">
+      <h5>TravelWise</h5>
+      <p>Your trusted partner for every journey, managing your travels with ease and efficiency.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="/dashboard"><i class="fas fa-chevron-right"></i> Home</a></li>
+        <li><a href="/expenses"><i class="fas fa-chevron-right"></i> Expenses</a></li>
+        <li><a href="/about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+        <li><a href="/contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="footer-section">
+      <h5>Follow Us</h5>
+      <ul class="social-links">
+        <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+        <li><a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+        <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="https://ie.linkedin.com/in/ben-hyland-8a4672291" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <p>&copy; 2024 TravelWise. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

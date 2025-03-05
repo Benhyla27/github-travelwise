@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome page</title>
+
+    <link rel="stylesheet" href="/css/Login_SignUp.css">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Stylus', sans-serif;
+        }
+        .title {
+            font-size: 48px;
+            margin-bottom: 40px;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .button-container a {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px 40px;
+            font-size: 24px;
+            color: #000;
+            background-color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 2px solid #000;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button-container a:hover {
+            background-color: #444;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="title">TravelWise</div>
+<div class="button-container">
+    <a href="/signup">Sign Up</a>
+    <a href="/login">Login</a>
+</div>
+</body>
+</html>

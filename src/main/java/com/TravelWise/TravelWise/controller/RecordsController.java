@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,5 +138,10 @@ public class RecordsController {
             ));
         }
         return bookingRecords;
+    }
+    @GetMapping("/records-diagnostic")
+    @ResponseBody  // This annotation makes the method return plain text instead of looking for a view
+    public String recordsDiagnostic() {
+        return "Records diagnostic page is working correctly";
     }
 }

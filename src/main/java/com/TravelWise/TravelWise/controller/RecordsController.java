@@ -107,16 +107,12 @@ public class RecordsController {
     // Retrieves the Boarding Pass-based records
     // Uses the DTO to store the record type and details
     private List<RecordDTO> getBoardingPassRecords(String username) {
-        List<BoardingPass> boardingPasses = boardingPassService.getBoardingPassesForUser(username); // Add this method if not present
+        List<BoardingPass> boardingPasses = boardingPassService.getBoardingPassesForUser(username);
         List<RecordDTO> boardingPassRecords = new ArrayList<>();
         for (BoardingPass boardingPass : boardingPasses) {
             boardingPassRecords.add(new RecordDTO(
                     "Boarding Pass",
-                    String.format("File Name: %s | <img src='/boardingPass/boardingPass/image/%d' alt='%s' style='max-width:150px; height:auto;' />",
-                            boardingPass.getFileName(),
-                            boardingPass.getId(),
-                            boardingPass.getFileName()
-                    )
+                    "File Name: " + boardingPass.getFileName()
             ));
         }
         return boardingPassRecords;

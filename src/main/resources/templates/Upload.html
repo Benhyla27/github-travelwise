@@ -6,6 +6,8 @@
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Poppins', sans-serif; /* Set Poppins as the primary font */
@@ -141,6 +143,78 @@
       .dashboard-layout .section {
         flex: 1;
       }
+      /* Footer Styling */
+      .footer {
+        background: #003d99; /* Vibrant blue for a professional look */
+        color: #fff; /* White text for contrast */
+        padding: 20px 0;
+      }
+
+      .footer .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0 10px;
+      }
+
+      .footer-section {
+        flex: 1 1 300px; /* Responsive width */
+        margin: 15px;
+      }
+
+      .footer-section h5 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .footer-section p {
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-section ul li a {
+        color: #79c2ff; /* Light blue links */
+        text-decoration: none;
+        transition: color 0.3s ease-in-out;
+      }
+
+      .footer-section ul li a:hover {
+        color: #fff; /* Link hover color for interaction */
+      }
+
+      .footer-section .social-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .footer-section .social-links li a {
+        font-size: 20px;
+        color: #79c2ff;
+        transition: color 0.3s ease-in-out;
+      }
+
+      .footer-section .social-links li a:hover {
+        color: #fff; /* Hover effect on social media icons */
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 15px 10px;
+        background: #002966; /* Darker shade for separation */
+        font-size: 14px;
+        margin-top: 20px;
+      }
     }
   </style>
 
@@ -187,6 +261,9 @@
       <h2>Upload Boarding Pass</h2>
       <form action="/boardingPass/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" class="form-control" required>
+        <small class="form-text text-muted">
+          Please upload your boarding pass as a PNG or JPG file format only.
+        </small>
         <button type="submit">Upload</button>
       </form>
       <ul class="mt-3">
